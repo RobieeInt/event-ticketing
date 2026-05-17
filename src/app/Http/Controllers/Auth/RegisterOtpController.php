@@ -68,6 +68,8 @@ class RegisterOtpController extends Controller
 
         // Set password final setelah OTP valid
         $user->update([
+            'otp_verified_at' => now(),
+            'status' => 'active',
             'password' => Hash::make($data['password']),
         ]);
 

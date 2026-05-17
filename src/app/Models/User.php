@@ -23,6 +23,11 @@ class User extends Authenticatable
         'password',
         'phone',
         'status',
+        'otp_verified_at',
+        'email_verified_at',
+        'role',
+        'suspended_at',
+        'suspension_reason',
     ];
 
     /**
@@ -44,12 +49,29 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'otp_verified_at'   => 'datetime',
+            'suspended_at'      => 'datetime',
+            'password'          => 'hashed',
         ];
+    }
+
+    public function isSuspended(): bool
+    {
+        return $this->suspended_at !== null;
     }
 
     public function organizerApplication()
     {
         return $this->hasOne(\App\Models\OrganizerApplication::class);
+    }
+
+    public function events()
+    {
+        return $this->hasMany(\App\Models\Event::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(\App\Models\Order::class);
     }
 }
